@@ -1,5 +1,5 @@
 /* 
-Smart_Bad Projekt Version 0.01
+PowerSwitch_Bad Projekt Version 0.01
 
 Pinbelegung:
 
@@ -19,29 +19,33 @@ Tempsensor  Pin
 #include "T_Objects.h"
 
 ///////////////////////////////////////////////////////////////////////////Settings/////////////////////////////////////////////
-const int Relai_1 = 5;
-const int Relai_2 = 18;
-const int pinDHT11 = 25;
-const char* Code_Version = "SmartBad_V0.01";
+const int Relai_1 = 32;
+const int Relai_2 = 33;
+const int Relai_3 = 25;
+const int Relai_4 = 26;
+const int Relai_5 = 27;
+const int pinDHT11 = 25; <-- hier muss anderer pin gewählt werden
+
+// Topics
+const char* subTopic1 = "Haus/EG/WZ/Licht/Baum";
+const char* subTopic2 = "Haus/EG/WZ/Power/TV";
+const char* subTopic3 = "Haus/EG/WZ/Power/Kommode";
+const char* subTopic4 = "Haus/EG/WZ/Power/Raspi";
+const char* subTopic5 = "Haus/EG/WZ/Power/Hifi";
+
+const char* pubTopic0 = "Haus/EG/WZ/Sensor/Temp";
+const char* pubTopic1 = "Haus/EG/WZ/Sensor/Hum";
 
 // Update these with values suitable for your network.
 const char* ssid = "Turner.Netz";
 const char* password = "3333333333333";
 const char* mqttBrokerIP = "192.168.1.111";
 const int  mqttBrokerPORT = 1883;
-const char* OTAHostname = "Bad_ESP";
+const char* OTAHostname = "WZ_MediaPower_ESP";
 
+const char* Code_Version = "PowerSwitch_ESP32_V0.01";
 ////////////////////////////////////////////////////////////////////////////// Variabeln//////////////////////////////////////////
 
-// Topics
-const char* subTopic1 = "Haus/EG/WZ/Licht";
-const char* subTopic2 = "Haus/EG/WZ/POWER_TV";
-const char* subTopic3 = "Haus/EG/WZ/Licht3";
-
-const char* pubTopic0 = "Haus/EG/WZ/Sensor/Temp";
-const char* pubTopic1 = "Haus/EG/WZ/Sensor/Hum";
-const char* pubTopic2 = "Haus/EG/WZ/Licht1";
-const char* pubTopic3 = "Haus/EG/WZ/Licht3";
 
 //Timing
 long lastMsg = 0;
@@ -96,19 +100,58 @@ void callback(char* topic, byte* payload, unsigned int length)
   }
 
   if (callTopic.equals(subTopic2)) {
-    Serial.println("Topic match subTopic2");
-    if((char)payload[0] == '0') {
-      Badheizer.power_off();//outletOff(1);
-    } else if ((char)payload[0] == '1'){
-      Badheizer.power_on();
+    Serial.println("Topic match subTopic1");
+    Serial.println((char)payload[0]);
+    if((char)payload[0] == '1') {
+      
+      digitalWrite(Relai_2, LOW);   // turn the LED on (HIGH is the voltage level)
+      Serial.println("Relai_1 LOW");  
+  
+    } else if ((char)payload[0] == '0'){
+      digitalWrite(Relai_3, HIGH);    // turn the LED off by making the voltage LOW
+      Serial.println("Relai_1 HIGH");  
     }    
   }
 
-  if (callTopic.equals(subTopic3)) {
-    if((char)payload[0] == '0') {
-      //outletOff(2);
-    } else if ((char)payload[0] == '1'){
-      //outletOn(2);
+ if (callTopic.equals(subTopic3)) {
+    Serial.println("Topic match subTopic1");
+    Serial.println((char)payload[0]);
+    if((char)payload[0] == '1') {
+      
+      digitalWrite(Relai_3, LOW);   // turn the LED on (HIGH is the voltage level)
+      Serial.println("Relai_1 LOW");  
+  
+    } else if ((char)payload[0] == '0'){
+      digitalWrite(Relai_3, HIGH);    // turn the LED off by making the voltage LOW
+      Serial.println("Relai_1 HIGH");  
+    }    
+  }
+   
+  if (callTopic.equals(subTopic4)) {
+    Serial.println("Topic match subTopic1");
+    Serial.println((char)payload[0]);
+    if((char)payload[0] == '1') {
+      
+      digitalWrite(Relai_4, LOW);   // turn the LED on (HIGH is the voltage level)
+      Serial.println("Relai_1 LOW");  
+  
+    } else if ((char)payload[0] == '0'){
+      digitalWrite(Relai_4, HIGH);    // turn the LED off by making the voltage LOW
+      Serial.println("Relai_1 HIGH");  
+    }    
+  }
+
+   if (callTopic.equals(subTopic5)) {
+    Serial.println("Topic match subTopic1");
+    Serial.println((char)payload[0]);
+    if((char)payload[0] == '1') {
+      
+      digitalWrite(Relai_5, LOW);   // turn the LED on (HIGH is the voltage level)
+      Serial.println("Relai_1 LOW");  
+  
+    } else if ((char)payload[0] == '0'){
+      digitalWrite(Relai_5, HIGH);    // turn the LED off by making the voltage LOW
+      Serial.println("Relai_1 HIGH");  
     }    
   }
 }
